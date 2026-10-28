@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#F5F3EF">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>文渊 · 刷题</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <h1>文渊</h1>
+    <div class="rule"></div>
+    <p id="sub">正在载入题库</p>
+  </header>
+
+  <div id="resume"></div>
+  <div id="overview"></div>
+  <div id="modules"><div class="loading">载 入 中</div></div>
+
+  <footer class="foot">
+    <div id="foot"></div>
+  </footer>
+</div>
+
+<script src="common.js"></script>
+<script>
+(async function () {
+  let index;
+  try {
+    index = await loadJSON(DATA + "index.json");
+  } catch (e) {
+    $("#modules").innerHTML = '<div class="loading">题库加载失败：' + esc(e.message) + '</div>';
+    return;
+  }
+
+  $("#sub").textContent = index.total.toLocaleString() + " 题 · " +
+    index.modules.map((m) => m.name).join(" / ");
+
+  const st = prog.stats();
+  const wrongN = prog.wrong().length;
+
+  /* ---- 继续上次 ---- */
+  const last = store.get("last", null);
+  if (last) {
+    $("#resume").innerHTML =
+      '<div class="resume"><span>上次停在 <b>' + esc(last.name) + '</b> 第 ' +
+      (last.idx + 1) + ' 题</span>' +
+      '<button data-go="practice.html?c=' + last.cid + '&at=' + last.idx + '">继续 →</button></div>';
+  }
+
+  /* ---- 总览 ---- */
+  if (st.done > 0) {
+    const rate = Math.round(st.right / st.done * 100);
+    $("#overview").innerHTML =
+      '<div class="overview">' +
+        '<div class="ov-item"><b>' + st.done.toLocaleString() + '</b><span>已做</span></div>' +
+        '<div class="ov-item"><b>' + rate + '%</b><span>正确率</span></div>' +
+        '<div class="ov-item"><b>' + wrongN + '</b><span>错题</span></div>' +
+        '<a class="ov-link" href="wrong.html">错题本 →</a>' +
+      '</div>';
+  } else {
+    $("#overview").innerHTML =
+      '<div class="overview"><div class="ov-item"><b>0</b><span>已做</span></div>' +
+      '<a class="ov-link" href="wrong.html">错题本 →</a></div>';
+  }
+
+  /* ---- 目录 ---- */
+  const html = index.modules.map(function (m) {
+    const cards = m.cats.filter((c) => c.count > 0).map(function (c) {
+      const p = st.byCat[c.id] || { done: 0, right: 0 };
+      const pct = c.count ? Math.min(100, p.done / c.count * 100) : 0;
+      const barW = p.done ? Math.max(pct, 1.4) : 0;
+      const rate = p.done ? Math.round(p.right / p.done * 100) : 0;
+      return '<div class="card">' +
+        '<h3>' + esc(c.name) + '</h3>' +
+        '<div class="meta">' + c.count + ' 题</div>' +
+        '<div class="bar"><i style="width:' + barW.toFixed(1) + '%"></i></div>' +
+        '<div class="prog">' + (p.done
+          ? '已做 ' + p.done + ' · 正确率 ' + rate + '%'
+          : '尚未开始') + '</div>' +
+        '<div class="acts">' +
+          '<button class="btn solid" data-c="' + c.id + '" data-m="seq">开始</button>' +
+          '<button class="btn" data-c="' + c.id + '" data-m="rand">随机 20</button>' +
+        '</div>' +
+        '<a class="cardlink" href="kplist.html?c=' + c.id + '">' + c.kpCount + ' 个考点 →</a>' +
+        '</div>';
+    }).join("");
+
+    return '<section class="module">' +
+      '<div class="module-head"><h2>' + esc(m.name) + '</h2><span>' + m.count + ' 题</span></div>' +
+      '<div class="grid">' + cards + '</div></section>';
+  }).join("");
+
+  $("#modules").innerHTML = html;
+
+  document.addEventListener("click", function (e) {
+    const go = e.target.closest("[data-go]");
+    if (go) { location.href = go.dataset.go; return; }
+    const b = e.target.closest("button[data-c]");
+    if (!b) return;
+    location.href = "practice.html?c=" + b.dataset.c + "&mode=" + b.dataset.m;
+  });
+
+  /* ---- 页脚 ---- */
+  let size = 0;
+  index.modules.forEach((m) => m.cats.forEach((c) => { size += c.size; }));
+  $("#foot").innerHTML = "数据构建于 " + esc(index.generated) +
+    " · 题库 " + size.toFixed(0) + " MB · 离线可用";
+})();
+</script>
+</body>
+</html>

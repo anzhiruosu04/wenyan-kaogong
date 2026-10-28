@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#F5F3EF">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>考点 · 文渊</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap narrow">
+  <header class="masthead">
+    <h1><a href="index.html" class="back" id="back">←</a><span id="title">考点</span></h1>
+    <div class="rule"></div>
+    <p id="sub"></p>
+  </header>
+
+  <div id="card"></div>
+  <div id="list"><div class="loading">载 入 中</div></div>
+
+  <footer class="foot"><div id="foot"></div></footer>
+</div>
+
+<script src="common.js"></script>
+<script>
+(async function () {
+  const P = new URLSearchParams(location.search);
+  const cid = P.get("c");
+  const kid = parseInt(P.get("k"), 10);
+  if (!cid || isNaN(kid)) { $("#list").innerHTML = '<div class="loading">缺少参数</div>'; return; }
+
+  const index = await loadJSON(DATA + "index.json");
+  const f = findCat(index, cid);
+  if (!f) { $("#list").innerHTML = '<div class="loading">未知分类</div>'; return; }
+  const cat = f.cat;
+
+  document.title = cat.name + " · 考点 · 文渊";
+  $("#title").textContent = cat.name;
+  $("#back").href = "kplist.html?c=" + cid;
+  $("#sub").textContent = f.module + " / " + cat.name + " 考点";
+
+  let data;
+  try {
+    data = await loadJSON(DATA + cat.kp);
+  } catch (e) {
+    $("#list").innerHTML = '<div class="loading">加载失败：' + esc(e.message) + '</div>';
+    return;
+  }
+  const kp = data.kps[kid];
+  if (!kp) { $("#list").innerHTML = '<div class="loading">找不到该考点</div>'; return; }
+
+  /* 考点卡片 */
+  $("#card").innerHTML =
+    '<div class="kpbox kpfull">' +
+      "<h4>" + esc(kp.name) + "</h4>" +
+      (kp.core ? '<p class="core clamp">' + fixImg(kp.core) + "</p>" : "") +
+      '<div class="sub">' + kp.count + " 题" +
+      (kp.years && kp.years.length ? " · 出现于 " + esc(kp.years.join(" / ")) : "") +
+      (kp.regions && kp.regions.length ? "<br>地区：" + esc(kp.regions.join("、")) : "") +
+      "</div>" +
+    "</div>";
+
+  /* 长考点卡片折叠 */
+  const coreEl = document.querySelector("#card .kpbox .core");
+  if (coreEl && coreEl.scrollHeight > coreEl.clientHeight + 6) {
+    const b = document.createElement("button");
+    b.className = "core-more";
+    b.textContent = "展开全文 ↓";
+    b.addEventListener("click", function () {
+      const open = coreEl.classList.toggle("open");
+      b.textContent = open ? "收起 ↑" : "展开全文 ↓";
+    });
+    coreEl.parentNode.insertBefore(b, coreEl.nextSibling);
+  }
+
+  /* 同分支的其他考点 */
+  const grp = (data.groups || []).filter(function (g) { return g.name === kp.g; })[0];
+  if (grp && grp.kps.length > 1) {
+    const others = grp.kps.filter(function (i) { return i !== kid; })
+      .sort(function (a, b) { return data.kps[b].count - data.kps[a].count; });
+    const shown = others.slice(0, 30);
+    $("#card").innerHTML +=
+      '<div class="sibbox">' +
+        '<div class="sh">同属「' + esc(kp.g) + '」的考点 · 共 ' + grp.kps.length +
+        " 个 / " + grp.count + ' 题</div>' +
+        '<div class="chips">' + shown.map(function (i) {
+          const x = data.kps[i];
+          const pre = kp.g + "-";
+          const lab = x.name.indexOf(pre) === 0 ? x.name.slice(pre.length) : x.name;
+          return '<a class="chip" href="kp.html?c=' + cid + "&k=" + i + '" title="' + esc(x.name) + '">' +
+            esc(lab) + (x.count > 1 ? "<i>" + x.count + "</i>" : "") + "</a>";
+        }).join("") + "</div>" +
+        (others.length > shown.length
+          ? '<a class="more" href="kplist.html?c=' + cid + '">还有 ' +
+            (others.length - shown.length) + " 个，去索引里看 →</a>"
+          : "") +
+      "</div>";
+  }
+
+  /* 真题列表 */
+  const qs = kp.q || [];
+  $("#list").innerHTML =
+    '<section class="module">' +
+      '<div class="module-head"><h2>该考点下全部真题</h2><span>' + qs.length + ' 道</span></div>' +
+      '<div class="wlist">' + qs.map(function (x) {
+        const r = prog.get(x[0]);
+        const cls = r ? (r[0] ? "st ok" : "st bad") : "st";
+        /* 资料分析的题名就是考点名，改用试卷名区分 */
+        const label = (x[1] && x[1] !== kp.name) ? x[1] : (x[4] || x[1] || x[0]);
+        return '<a class="wq" href="practice.html?q=' + encodeURIComponent(x[0]) + '">' +
+          '<span class="' + cls + '"></span>' +
+          '<span class="wt">' + esc(label) + '</span>' +
+          '<span class="wm">' + esc([x[2], x[3]].filter(Boolean).join(" ")) + '</span>' +
+          "</a>";
+      }).join("") + "</div>" +
+    "</section>";
+
+  $("#foot").textContent = "点题目直接进入作答；前面的圆点表示你在这道题上的状态。";
+})();
+</script>
+</body>
+</html>

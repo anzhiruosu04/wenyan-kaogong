@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#F5F3EF">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>考点索引 · 文渊</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap narrow">
+  <header class="masthead">
+    <h1><a href="index.html" class="back">←</a><span id="title">考点索引</span></h1>
+    <div class="rule"></div>
+    <p id="sub">载 入 中</p>
+  </header>
+
+  <div class="searchbar" id="sbox">
+    <input id="kw" type="search" placeholder="搜考点名，例如「位置规律」「比重」" autocomplete="off">
+  </div>
+
+  <div id="list"><div class="loading">载 入 中</div></div>
+  <footer class="foot"><div id="foot"></div></footer>
+</div>
+
+<script src="common.js"></script>
+<script>
+(async function () {
+  const P = new URLSearchParams(location.search);
+  const cid = P.get("c");
+
+  const index = await loadJSON(DATA + "index.json");
+
+  /* 未指定分类：先选分类 */
+  if (!cid) {
+    $("#sub").textContent = "先选一个分类";
+    $("#sbox").style.display = "none";
+    $("#list").innerHTML = index.modules.map(function (m) {
+      return '<section class="module">' +
+        '<div class="module-head"><h2>' + esc(m.name) + '</h2><span>' + m.count + ' 题</span></div>' +
+        '<div class="wlist">' + m.cats.filter((c) => c.count > 0).map(function (c) {
+          return '<a class="wq" href="kplist.html?c=' + c.id + '">' +
+            '<span class="wt">' + esc(c.name) + '</span>' +
+            '<span class="wm">' + c.kpCount + ' 个考点</span></a>';
+        }).join("") + "</div></section>";
+    }).join("");
+    return;
+  }
+
+  const f = findCat(index, cid);
+  if (!f) { $("#list").innerHTML = '<div class="loading">未知分类</div>'; return; }
+  const cat = f.cat;
+  document.title = cat.name + " · 考点索引 · 文渊";
+  $("#title").textContent = cat.name;
+  $("#sub").textContent = f.module + " / " + cat.name + " · 按分支归并";
+
+  let data;
+  try {
+    data = await loadJSON(DATA + cat.kp);
+  } catch (e) {
+    $("#list").innerHTML = '<div class="loading">加载失败：' + esc(e.message) + '</div>';
+    return;
+  }
+
+  const kps = data.kps;
+  const groups = (data.groups || []).slice();
+
+  function draw(kw) {
+    const k = (kw || "").trim();
+    let hitGroups = groups;
+    let hitKps = kps;
+
+    if (k) {
+      const keep = new Set();
+      kps.forEach(function (x) { if (x.name.indexOf(k) >= 0) keep.add(x.id); });
+      hitKps = kps.filter((x) => keep.has(x.id));
+      hitGroups = groups.map(function (g) {
+        const ids = g.kps.filter((i) => keep.has(i));
+        return { name: g.name, kps: ids, count: ids.reduce(function (s, i) { return s + kps[i].count; }, 0) };
+      }).filter((g) => g.kps.length);
+    }
+
+    if (!hitGroups.length) {
+      $("#list").innerHTML = '<div class="empty">没有匹配的考点</div>';
+      $("#foot").textContent = "共 " + kps.length + " 个考点";
+      return;
+    }
+
+    $("#list").innerHTML = hitGroups.map(function (g) {
+      const ids = g.kps.slice().sort(function (a, b) { return kps[b].count - kps[a].count; });
+      const rows = ids.map(function (i) {
+        const x = kps[i];
+        return '<a class="wq" href="kp.html?c=' + cid + "&k=" + i + '">' +
+          '<span class="wt">' + esc(x.name) + '</span>' +
+          '<span class="wm">' + x.count + ' 题</span></a>';
+      }).join("");
+      return '<section class="module">' +
+        '<div class="module-head"><h2>' + esc(g.name) + '</h2>' +
+        '<span>' + g.kps.length + ' 个考点 · ' + g.count + ' 题</span></div>' +
+        '<div class="wlist">' + rows + "</div></section>";
+    }).join("");
+
+    $("#foot").textContent = "共 " + kps.length + " 个考点、 " + groups.length + " 个分支" +
+      (k ? " · 匹配 " + hitKps.length + " 个" : "");
+  }
+
+  draw("");
+
+  let timer = null;
+  $("#kw").addEventListener("input", function (e) {
+    clearTimeout(timer);
+    const v = e.target.value;
+    timer = setTimeout(function () { draw(v); }, 120);
+  });
+})();
+</script>
+</body>
+</html>

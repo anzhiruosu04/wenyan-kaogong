@@ -1,0 +1,14 @@
+{
+  "name": "文渊 · 考公刷题",
+  "short_name": "文渊",
+  "description": "判断推理与资料分析真题，带解析与考点溯源",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F5F3EF",
+  "theme_color": "#F5F3EF",
+  "lang": "zh-CN",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
