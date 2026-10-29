@@ -34,11 +34,11 @@ const prog = {
     return this._d;
   },
   get(qid) { return this.all()[qid] || null; },
-  mark(qid, ok, cid, title, yr, rg) {
+  mark(qid, ok, cid, title, yr, rg, picked) {
     const d = this.all();
     const old = d[qid];
     const wc = (old ? old[4] || 0 : 0) + (ok ? 0 : 1);
-    d[qid] = [ok ? 1 : 0, cid, (title || (old ? old[2] : "")) || "", Date.now(), wc, yr || "", rg || ""];
+    d[qid] = [ok ? 1 : 0, cid, (title || (old ? old[2] : "")) || "", Date.now(), wc, yr || "", rg || "", picked || ""];
     this._dirty = true;
     this.flush();
     return d[qid];
@@ -69,7 +69,7 @@ const prog = {
     for (const qid in d) {
       const r = d[qid];
       if (r[0]) continue;
-      list.push({ qid: qid, cid: r[1], title: r[2], ts: r[3], wc: r[4] || 0, yr: r[5], rg: r[6] });
+      list.push({ qid: qid, cid: r[1], title: r[2], ts: r[3], wc: r[4] || 0, yr: r[5], rg: r[6], picked: r[7] || "" });
     }
     list.sort(function (a, b) { return (b.wc - a.wc) || (b.ts - a.ts); });
     return list;
@@ -146,4 +146,32 @@ if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
   window.addEventListener("load", function () {
     navigator.serviceWorker.register("sw.js").catch(function () {});
   });
+}
+
+
+/* 按 qid 跨分类取完整题目（导出用） */
+let _qmapCache = null;
+async function getQmap() {
+  if (!_qmapCache) _qmapCache = await loadJSON(DATA + "qmap.json");
+  return _qmapCache;
+}
+
+async function fetchQuestion(qid) {
+  const map = await getQmap();
+  const loc = map[qid];
+  if (!loc) return null;
+  const index = await loadJSON(DATA + "index.json");
+  const found = findCat(index, loc[0]);
+  if (!found) return null;
+  const cat = found.cat;
+  const chunk = cat.chunks[loc[1]];
+  const arr = (await loadJSON(DATA + chunk.f)).q;
+  const q = arr[loc[2]];
+  if (!q) return null;
+  let material = "";
+  if (q.material && cat.meta) {
+    const meta = await loadJSON(DATA + cat.meta);
+    material = (meta.materials || {})[q.material] || "";
+  }
+  return Object.assign({}, q, { _cat: cat.name, _material: material });
 }

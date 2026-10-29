@@ -797,3 +797,23 @@ img[flag="tex"] {
 /* 八选项题（陕西卷等）自动换行 */
 .opts.slim { flex-wrap: wrap; }
 .opts.slim .opt { flex: 1 1 calc(25% - 8px); min-width: 56px; }
+
+/* ---------- 错题导出 ---------- */
+.exbar { border:1px solid var(--line); border-radius:3px; background:var(--card); padding:10px 12px; margin:16px 0 8px; }
+.exrow { display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
+.exrow + .exrow { margin-top:9px; padding-top:9px; border-top:1px solid var(--line); }
+.chipbtn { font:inherit; font-size:12.5px; color:var(--muted); background:transparent; border:1px solid var(--line); border-radius:2px; padding:5px 10px; cursor:pointer; }
+.chipbtn:hover { border-color: var(--accent); color: var(--accent); }
+.chipbtn.on { color:#fff; background:var(--accent); border-color:var(--accent); }
+.catsel { font:inherit; font-size:12.5px; color:var(--muted); border:1px solid var(--line); background:var(--card); border-radius:2px; padding:5px 8px; }
+.selinfo { font-size:12.5px; color:var(--muted); margin-right:auto; }
+.selinfo b { color:var(--accent); font-family:var(--serif); font-size:15px; }
+.selinfo i { font-style:normal; }
+.exfoot .btn { flex:0 0 auto; padding:6px 14px; font-size:12.5px; }
+.exfoot .btn.solid { padding:6px 18px; }
+.wq input.ck { margin:2px 2px 0 0; width:15px; height:15px; accent-color:var(--accent); flex-shrink:0; }
+.mask { position:fixed; inset:0; background:rgba(31,32,36,.35); display:none; align-items:center; justify-content:center; z-index:50; }
+.mask.on { display:flex; }
+.maskbox { background:var(--card); border-radius:4px; padding:22px 30px; min-width:220px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,.18); }
+.maskbox b { display:block; font-family:var(--serif); font-size:16px; margin-bottom:8px; }
+.maskbox span { font-size:12.5px; color:var(--muted); }

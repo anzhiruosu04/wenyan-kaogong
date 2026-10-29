@@ -135,7 +135,7 @@
       const wrong = q.options.find((o) => o.k !== q.answer);
       const pick = wrong ? wrong.k : q.answer;
       done.set(q.qid, pick);
-      prog.mark(q.qid, pick === q.answer, CAT.id, q.title, q.year, q.region);
+      prog.mark(q.qid, pick === q.answer, CAT.id, q.title, q.year, q.region, pick);
     }
 
     const revealed = done.has(q.qid);
@@ -324,7 +324,7 @@
       const sel = stage.querySelector(".opt.sel");
       const pick = sel ? sel.dataset.k : null;
       done.set(q.qid, pick);
-      prog.mark(q.qid, pick === q.answer, CAT.id, q.title, q.year, q.region);
+      prog.mark(q.qid, pick === q.answer, CAT.id, q.title, q.year, q.region, pick);
       await render();
       const v = stage.querySelector(".verdict") || stage.querySelector(".block");
       if (v) v.scrollIntoView({ block: "center", behavior: "smooth" });
