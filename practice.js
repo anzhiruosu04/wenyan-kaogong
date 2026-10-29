@@ -1,4 +1,4 @@
-/* 文渊刷题 · 答题页 */
+﻿/* 文渊刷题 · 答题页 */
 (function () {
   const P = new URLSearchParams(location.search);
   const cid = P.get("c");
@@ -73,6 +73,7 @@
 
   /* 考点卡片：就绪返回数组，未就绪返回 null 并触发后台加载 */
   function kpFor(cat) {
+    if (!cat.kp) return [];
     if (KPmap.has(cat.id)) return KPmap.get(cat.id);
     if (!KPloading.has(cat.id)) {
       KPloading.set(cat.id, loadJSON(DATA + cat.kp)
@@ -83,6 +84,7 @@
   }
 
   function kpReady(cat) {
+    if (!cat.kp) return Promise.resolve([]);
     return KPloading.get(cat.id) || Promise.resolve([]);
   }
 
@@ -234,7 +236,7 @@
       }
 
       const KPS = kpFor(CAT);
-      if (q.kp || KPS) {
+      if (CAT.kp && (q.kp || KPS)) {
         blocks.push('<div class="block"><div class="h">考点溯源</div><div id="kpbox">' +
           (KPS ? kpHTML(KPS[q.kpId], q.kp, CAT.id) : '<div style="color:var(--faint);font-size:13px;padding:6px 0">载入中…</div>') +
           "</div></div>");
@@ -283,7 +285,7 @@
               '<button class="btn solid grow" id="next"' + (!canSubmit ? " disabled" : "") + ">" +
                 esc(submitLabel) + "</button>" +
             "</div>" +
-            '<div class="khint">A–D 选项 · Enter 提交 / 下一题 · ← → 翻页</div>') +
+            '<div class="khint">A–H 选项 · Enter 提交 / 下一题 · ← → 翻页</div>') +
         doneBox +
       "</div>";
 

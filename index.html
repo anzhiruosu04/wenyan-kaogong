@@ -19,6 +19,7 @@
 
   <div id="resume"></div>
   <div id="overview"></div>
+  <nav id="modnav" class="modnav"></nav>
   <div id="modules"><div class="loading">载 入 中</div></div>
 
   <footer class="foot">
@@ -69,7 +70,7 @@
   }
 
   /* ---- 目录 ---- */
-  const html = index.modules.map(function (m) {
+  const html = index.modules.map(function (m, mi) {
     const cards = m.cats.filter((c) => c.count > 0).map(function (c) {
       const p = st.byCat[c.id] || { done: 0, right: 0 };
       const pct = c.count ? Math.min(100, p.done / c.count * 100) : 0;
@@ -86,16 +87,20 @@
           '<button class="btn solid" data-c="' + c.id + '" data-m="seq">开始</button>' +
           '<button class="btn" data-c="' + c.id + '" data-m="rand">随机 20</button>' +
         '</div>' +
-        '<a class="cardlink" href="kplist.html?c=' + c.id + '">' + c.kpCount + ' 个考点 →</a>' +
+        (c.kpCount ? '<a class="cardlink" href="kplist.html?c=' + c.id + '">' + c.kpCount + ' 个考点 →</a>' : "") +
         '</div>';
     }).join("");
 
-    return '<section class="module">' +
+    return '<section class="module" id="mod-' + mi + '">' +
       '<div class="module-head"><h2>' + esc(m.name) + '</h2><span>' + m.count + ' 题</span></div>' +
       '<div class="grid">' + cards + '</div></section>';
   }).join("");
 
   $("#modules").innerHTML = html;
+
+  $("#modnav").innerHTML = index.modules.map(function (m, mi) {
+    return '<a href="#mod-' + mi + '">' + esc(m.name) + '<i>' + m.count + '</i></a>';
+  }).join("");
 
   document.addEventListener("click", function (e) {
     const go = e.target.closest("[data-go]");

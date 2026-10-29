@@ -1,6 +1,708 @@
 {
- "generated": "2026-10-28 13:13:50",
+ "generated": "2026-10-29 22:27:02",
  "modules": [
+  {
+   "name": "政治理论",
+   "count": 1084,
+   "cats": [
+    {
+     "id": "c13",
+     "name": "新思想",
+     "count": 668,
+     "kpCount": 0,
+     "meta": "c13-meta.json",
+     "kp": "",
+     "chunks": [
+      {
+       "f": "c13-p0.json",
+       "start": 0,
+       "count": 350,
+       "size": 0.65
+      },
+      {
+       "f": "c13-p1.json",
+       "start": 200,
+       "count": 350,
+       "size": 0.8
+      },
+      {
+       "f": "c13-p2.json",
+       "start": 400,
+       "count": 268,
+       "size": 0.68
+      },
+      {
+       "f": "c13-p3.json",
+       "start": 600,
+       "count": 68,
+       "size": 0.18
+      }
+     ],
+     "size": 2.31,
+     "materials": 0
+    },
+    {
+     "id": "c14",
+     "name": "时事政治",
+     "count": 291,
+     "kpCount": 0,
+     "meta": "c14-meta.json",
+     "kp": "",
+     "chunks": [
+      {
+       "f": "c14-p0.json",
+       "start": 0,
+       "count": 291,
+       "size": 0.63
+      },
+      {
+       "f": "c14-p1.json",
+       "start": 200,
+       "count": 91,
+       "size": 0.21
+      }
+     ],
+     "size": 0.84,
+     "materials": 0
+    },
+    {
+     "id": "c15",
+     "name": "马克思主义",
+     "count": 80,
+     "kpCount": 0,
+     "meta": "c15-meta.json",
+     "kp": "",
+     "chunks": [
+      {
+       "f": "c15-p0.json",
+       "start": 0,
+       "count": 80,
+       "size": 0.2
+      }
+     ],
+     "size": 0.2,
+     "materials": 0
+    },
+    {
+     "id": "c16",
+     "name": "毛中特",
+     "count": 45,
+     "kpCount": 0,
+     "meta": "c16-meta.json",
+     "kp": "",
+     "chunks": [
+      {
+       "f": "c16-p0.json",
+       "start": 0,
+       "count": 45,
+       "size": 0.09
+      }
+     ],
+     "size": 0.09,
+     "materials": 0
+    }
+   ]
+  },
+  {
+   "name": "常识判断",
+   "count": 4857,
+   "cats": [
+    {
+     "id": "c17",
+     "name": "人文常识",
+     "count": 2792,
+     "kpCount": 0,
+     "meta": "c17-meta.json",
+     "kp": "",
+     "chunks": [
+      {
+       "f": "c17-p0.json",
+       "start": 0,
+       "count": 350,
+       "size": 0.56
+      },
+      {
+       "f": "c17-p1.json",
+       "start": 200,
+       "count": 350,
+       "size": 0.59
+      },
+      {
+       "f": "c17-p2.json",
+       "start": 400,
+       "count": 350,
+       "size": 0.61
+      },
+      {
+       "f": "c17-p3.json",
+       "start": 600,
+       "count": 350,
+       "size": 0.58
+      },
+      {
+       "f": "c17-p4.json",
+       "start": 800,
+       "count": 350,
+       "size": 0.6
+      },
+      {
+       "f": "c17-p5.json",
+       "start": 1000,
+       "count": 350,
+       "size": 0.65
+      },
+      {
+       "f": "c17-p6.json",
+       "start": 1200,
+       "count": 350,
+       "size": 0.66
+      },
+      {
+       "f": "c17-p7.json",
+       "start": 1400,
+       "count": 350,
+       "size": 0.68
+      },
+      {
+       "f": "c17-p8.json",
+       "start": 1600,
+       "count": 350,
+       "size": 0.71
+      },
+      {
+       "f": "c17-p9.json",
+       "start": 1800,
+       "count": 350,
+       "size": 0.69
+      },
+      {
+       "f": "c17-p10.json",
+       "start": 2000,
+       "count": 350,
+       "size": 0.67
+      },
+      {
+       "f": "c17-p11.json",
+       "start": 2200,
+       "count": 350,
+       "size": 0.71
+      },
+      {
+       "f": "c17-p12.json",
+       "start": 2400,
+       "count": 350,
+       "size": 0.74
+      },
+      {
+       "f": "c17-p13.json",
+       "start": 2600,
+       "count": 192,
+       "size": 0.41
+      }
+     ],
+     "size": 8.86,
+     "materials": 0
+    },
+    {
+     "id": "c18",
+     "name": "科技常识",
+     "count": 789,
+     "kpCount": 0,
+     "meta": "c18-meta.json",
+     "kp": "",
+     "chunks": [
+      {
+       "f": "c18-p0.json",
+       "start": 0,
+       "count": 350,
+       "size": 0.62
+      },
+      {
+       "f": "c18-p1.json",
+       "start": 200,
+       "count": 350,
+       "size": 0.68
+      },
+      {
+       "f": "c18-p2.json",
+       "start": 400,
+       "count": 350,
+       "size": 0.74
+      },
+      {
+       "f": "c18-p3.json",
+       "start": 600,
+       "count": 189,
+       "size": 0.42
+      }
+     ],
+     "size": 2.46,
+     "materials": 0
+    },
+    {
+     "id": "c19",
+     "name": "法律常识",
+     "count": 760,
+     "kpCount": 0,
+     "meta": "c19-meta.json",
+     "kp": "",
+     "chunks": [
+      {
+       "f": "c19-p0.json",
+       "start": 0,
+       "count": 350,
+       "size": 0.72
+      },
+      {
+       "f": "c19-p1.json",
+       "start": 200,
+       "count": 350,
+       "size": 0.77
+      },
+      {
+       "f": "c19-p2.json",
+       "start": 400,
+       "count": 350,
+       "size": 0.79
+      },
+      {
+       "f": "c19-p3.json",
+       "start": 600,
+       "count": 160,
+       "size": 0.39
+      }
+     ],
+     "size": 2.67,
+     "materials": 0
+    },
+    {
+     "id": "c20",
+     "name": "地理国情",
+     "count": 280,
+     "kpCount": 0,
+     "meta": "c20-meta.json",
+     "kp": "",
+     "chunks": [
+      {
+       "f": "c20-p0.json",
+       "start": 0,
+       "count": 280,
+       "size": 0.52
+      },
+      {
+       "f": "c20-p1.json",
+       "start": 200,
+       "count": 80,
+       "size": 0.18
+      }
+     ],
+     "size": 0.7,
+     "materials": 0
+    },
+    {
+     "id": "c21",
+     "name": "经济常识",
+     "count": 236,
+     "kpCount": 0,
+     "meta": "c21-meta.json",
+     "kp": "",
+     "chunks": [
+      {
+       "f": "c21-p0.json",
+       "start": 0,
+       "count": 236,
+       "size": 0.45
+      },
+      {
+       "f": "c21-p1.json",
+       "start": 200,
+       "count": 36,
+       "size": 0.08
+      }
+     ],
+     "size": 0.53,
+     "materials": 0
+    }
+   ]
+  },
+  {
+   "name": "言语理解与表达",
+   "count": 6963,
+   "cats": [
+    {
+     "id": "c22",
+     "name": "片段阅读",
+     "count": 3326,
+     "kpCount": 0,
+     "meta": "c22-meta.json",
+     "kp": "",
+     "chunks": [
+      {
+       "f": "c22-p0.json",
+       "start": 0,
+       "count": 350,
+       "size": 0.66
+      },
+      {
+       "f": "c22-p1.json",
+       "start": 200,
+       "count": 350,
+       "size": 0.68
+      },
+      {
+       "f": "c22-p2.json",
+       "start": 400,
+       "count": 350,
+       "size": 0.69
+      },
+      {
+       "f": "c22-p3.json",
+       "start": 600,
+       "count": 350,
+       "size": 0.7
+      },
+      {
+       "f": "c22-p4.json",
+       "start": 800,
+       "count": 350,
+       "size": 0.7
+      },
+      {
+       "f": "c22-p5.json",
+       "start": 1000,
+       "count": 350,
+       "size": 0.7
+      },
+      {
+       "f": "c22-p6.json",
+       "start": 1200,
+       "count": 350,
+       "size": 0.71
+      },
+      {
+       "f": "c22-p7.json",
+       "start": 1400,
+       "count": 350,
+       "size": 0.73
+      },
+      {
+       "f": "c22-p8.json",
+       "start": 1600,
+       "count": 350,
+       "size": 0.74
+      },
+      {
+       "f": "c22-p9.json",
+       "start": 1800,
+       "count": 350,
+       "size": 0.75
+      },
+      {
+       "f": "c22-p10.json",
+       "start": 2000,
+       "count": 350,
+       "size": 0.75
+      },
+      {
+       "f": "c22-p11.json",
+       "start": 2200,
+       "count": 350,
+       "size": 0.77
+      },
+      {
+       "f": "c22-p12.json",
+       "start": 2400,
+       "count": 350,
+       "size": 0.75
+      },
+      {
+       "f": "c22-p13.json",
+       "start": 2600,
+       "count": 350,
+       "size": 0.75
+      },
+      {
+       "f": "c22-p14.json",
+       "start": 2800,
+       "count": 350,
+       "size": 0.78
+      },
+      {
+       "f": "c22-p15.json",
+       "start": 3000,
+       "count": 326,
+       "size": 0.74
+      },
+      {
+       "f": "c22-p16.json",
+       "start": 3200,
+       "count": 126,
+       "size": 0.29
+      }
+     ],
+     "size": 11.89,
+     "materials": 0
+    },
+    {
+     "id": "c23",
+     "name": "逻辑填空",
+     "count": 2700,
+     "kpCount": 0,
+     "meta": "c23-meta.json",
+     "kp": "",
+     "chunks": [
+      {
+       "f": "c23-p0.json",
+       "start": 0,
+       "count": 350,
+       "size": 0.6
+      },
+      {
+       "f": "c23-p1.json",
+       "start": 200,
+       "count": 350,
+       "size": 0.61
+      },
+      {
+       "f": "c23-p2.json",
+       "start": 400,
+       "count": 350,
+       "size": 0.64
+      },
+      {
+       "f": "c23-p3.json",
+       "start": 600,
+       "count": 350,
+       "size": 0.61
+      },
+      {
+       "f": "c23-p4.json",
+       "start": 800,
+       "count": 350,
+       "size": 0.64
+      },
+      {
+       "f": "c23-p5.json",
+       "start": 1000,
+       "count": 350,
+       "size": 0.66
+      },
+      {
+       "f": "c23-p6.json",
+       "start": 1200,
+       "count": 350,
+       "size": 0.67
+      },
+      {
+       "f": "c23-p7.json",
+       "start": 1400,
+       "count": 350,
+       "size": 0.69
+      },
+      {
+       "f": "c23-p8.json",
+       "start": 1600,
+       "count": 350,
+       "size": 0.7
+      },
+      {
+       "f": "c23-p9.json",
+       "start": 1800,
+       "count": 350,
+       "size": 0.72
+      },
+      {
+       "f": "c23-p10.json",
+       "start": 2000,
+       "count": 350,
+       "size": 0.72
+      },
+      {
+       "f": "c23-p11.json",
+       "start": 2200,
+       "count": 350,
+       "size": 0.76
+      },
+      {
+       "f": "c23-p12.json",
+       "start": 2400,
+       "count": 300,
+       "size": 0.66
+      },
+      {
+       "f": "c23-p13.json",
+       "start": 2600,
+       "count": 100,
+       "size": 0.22
+      }
+     ],
+     "size": 8.9,
+     "materials": 0
+    },
+    {
+     "id": "c24",
+     "name": "语句表达",
+     "count": 937,
+     "kpCount": 0,
+     "meta": "c24-meta.json",
+     "kp": "",
+     "chunks": [
+      {
+       "f": "c24-p0.json",
+       "start": 0,
+       "count": 350,
+       "size": 0.66
+      },
+      {
+       "f": "c24-p1.json",
+       "start": 200,
+       "count": 350,
+       "size": 0.7
+      },
+      {
+       "f": "c24-p2.json",
+       "start": 400,
+       "count": 350,
+       "size": 0.74
+      },
+      {
+       "f": "c24-p3.json",
+       "start": 600,
+       "count": 337,
+       "size": 0.74
+      },
+      {
+       "f": "c24-p4.json",
+       "start": 800,
+       "count": 137,
+       "size": 0.31
+      }
+     ],
+     "size": 3.15,
+     "materials": 0
+    }
+   ]
+  },
+  {
+   "name": "数量关系",
+   "count": 3224,
+   "cats": [
+    {
+     "id": "c25",
+     "name": "数学运算",
+     "count": 3224,
+     "kpCount": 0,
+     "meta": "c25-meta.json",
+     "kp": "",
+     "chunks": [
+      {
+       "f": "c25-p0.json",
+       "start": 0,
+       "count": 350,
+       "size": 0.55
+      },
+      {
+       "f": "c25-p1.json",
+       "start": 200,
+       "count": 350,
+       "size": 0.59
+      },
+      {
+       "f": "c25-p2.json",
+       "start": 400,
+       "count": 350,
+       "size": 0.59
+      },
+      {
+       "f": "c25-p3.json",
+       "start": 600,
+       "count": 350,
+       "size": 0.56
+      },
+      {
+       "f": "c25-p4.json",
+       "start": 800,
+       "count": 350,
+       "size": 0.59
+      },
+      {
+       "f": "c25-p5.json",
+       "start": 1000,
+       "count": 350,
+       "size": 0.62
+      },
+      {
+       "f": "c25-p6.json",
+       "start": 1200,
+       "count": 350,
+       "size": 0.64
+      },
+      {
+       "f": "c25-p7.json",
+       "start": 1400,
+       "count": 350,
+       "size": 0.67
+      },
+      {
+       "f": "c25-p8.json",
+       "start": 1600,
+       "count": 350,
+       "size": 0.66
+      },
+      {
+       "f": "c25-p9.json",
+       "start": 1800,
+       "count": 350,
+       "size": 0.58
+      },
+      {
+       "f": "c25-p10.json",
+       "start": 2000,
+       "count": 350,
+       "size": 0.54
+      },
+      {
+       "f": "c25-p11.json",
+       "start": 2200,
+       "count": 350,
+       "size": 0.52
+      },
+      {
+       "f": "c25-p12.json",
+       "start": 2400,
+       "count": 350,
+       "size": 0.56
+      },
+      {
+       "f": "c25-p13.json",
+       "start": 2600,
+       "count": 350,
+       "size": 0.58
+      },
+      {
+       "f": "c25-p14.json",
+       "start": 2800,
+       "count": 350,
+       "size": 0.57
+      },
+      {
+       "f": "c25-p15.json",
+       "start": 3000,
+       "count": 224,
+       "size": 0.35
+      },
+      {
+       "f": "c25-p16.json",
+       "start": 3200,
+       "count": 24,
+       "size": 0.04
+      }
+     ],
+     "size": 9.21,
+     "materials": 0
+    }
+   ]
+  },
   {
    "name": "判断推理",
    "count": 7713,
@@ -386,5 +1088,5 @@
    ]
   }
  ],
- "total": 11282
+ "total": 27410
 }
