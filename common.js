@@ -81,6 +81,41 @@ const prog = {
   }
 };
 
+/* ---------------- 收藏（加入导出清单） ---------------- */
+/* 每题一条：[分类 id, 标题, 时间戳, 年份, 地区] */
+const pick = {
+  _d: null,
+  all() {
+    if (!this._d) this._d = store.get("pick", {}) || {};
+    return this._d;
+  },
+  has(qid) { return !!this.all()[qid]; },
+  toggle(qid, cid, title, yr, rg) {
+    const d = this.all();
+    if (d[qid]) { delete d[qid]; store.set("pick", d); return false; }
+    d[qid] = [cid || "", title || "", Date.now(), yr || "", rg || ""];
+    store.set("pick", d);
+    return true;
+  },
+  remove(qid) {
+    const d = this.all();
+    if (!d[qid]) return false;
+    delete d[qid];
+    store.set("pick", d);
+    return true;
+  },
+  list() {
+    const d = this.all(), out = [];
+    for (const qid in d) {
+      const r = d[qid];
+      out.push({ qid: qid, cid: r[0], title: r[1], ts: r[2], yr: r[3], rg: r[4] });
+    }
+    out.sort(function (a, b) { return (b.ts - a.ts) || (a.qid < b.qid ? 1 : -1); });
+    return out;
+  },
+  count() { return Object.keys(this.all()).length; }
+};
+
 /* 找到某个分类 */
 function findCat(index, cid) {
   for (const m of index.modules) {

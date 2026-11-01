@@ -817,3 +817,26 @@ img[flag="tex"] {
 .maskbox { background:var(--card); border-radius:4px; padding:22px 30px; min-width:220px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,.18); }
 .maskbox b { display:block; font-family:var(--serif); font-size:16px; margin-bottom:8px; }
 .maskbox span { font-size:12.5px; color:var(--muted); }
+
+/* ---------- 我的题：错题 / 收藏 切换 ---------- */
+.tabs { display:flex; gap:26px; margin:0 0 16px; border-bottom:1px solid var(--line); }
+.tab { font:inherit; font-size:15px; font-family:var(--serif); color:var(--muted); background:none; border:none;
+  padding:6px 0 10px; cursor:pointer; position:relative; letter-spacing:.04em; }
+.tab i { font-style:normal; font-size:11.5px; font-family:var(--sans); color:var(--faint); margin-left:5px; }
+.tab.on { color:var(--ink); }
+.tab.on::after { content:""; position:absolute; left:0; right:0; bottom:-1px; height:2px; background:var(--accent); }
+.tab.on i { color:var(--accent); }
+.rmv { font:inherit; font-size:11.5px; color:var(--faint); background:none; border:none; cursor:pointer;
+  padding:2px 4px; margin-left:10px; flex-shrink:0; }
+.rmv:hover { color:var(--bad); }
+
+/* ---------- 答题页：收藏按钮 ---------- */
+.actions .btn.star { flex:0 0 auto; padding-left:12px; padding-right:12px; font-size:13px; color:var(--muted); }
+.actions .btn.star.on { color:var(--accent); border-color:var(--accent); background:var(--accent-soft); }
+.dacts .btn.star { font-size:13px; }
+.dacts .btn.star.on { color:var(--accent); border-color:var(--accent); background:var(--accent-soft); }
+
+@media (max-width:420px) {
+  .actions .btn.star { padding-left:8px; padding-right:8px; font-size:12px; }
+  .actions .btn { padding-left:10px; padding-right:10px; }
+}

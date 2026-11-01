@@ -6,17 +6,18 @@
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#F5F3EF">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
-<title>错题本 · 文渊</title>
+<title>我的题 · 文渊</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="wrap narrow">
   <header class="masthead">
-    <h1><a href="index.html" class="back">←</a>错题本</h1>
+    <h1><a href="index.html" class="back">←</a>我的题</h1>
     <div class="rule"></div>
-    <p id="sub">只看答错的题；之后做对了会自动移出</p>
+    <p id="sub">只列答错的题；之后做对了会自动移出</p>
   </header>
 
+  <div id="tabs"></div>
   <div id="bar"></div>
   <div id="list"><div class="loading">载 入 中</div></div>
 
@@ -36,78 +37,131 @@
   const nameOf = {};
   index.modules.forEach((m) => m.cats.forEach((c) => { nameOf[c.id] = c.name; }));
 
-  const wrong = prog.wrong();
-  if (!wrong.length) {
-    $("#list").innerHTML = '<div class="empty">错题本是空的。<br><span>去做几道，答错的会自动收进来。</span></div>' +
-      '<div style="text-align:center;margin-top:22px"><a class="btn solid" href="index.html">回目录</a></div>';
-    $("#foot").textContent = "记录保存在本机浏览器里，不会上传。";
-    return;
-  }
-
+  let mode = (location.hash === "#pick") ? "pick" : "wrong";   /* wrong | pick */
   let filter = "all";
   let catFilter = "";
   const sel = new Set();
-  const cats = [];
-  wrong.forEach((w) => { if (w.cid && cats.indexOf(w.cid) < 0) cats.push(w.cid); });
+  let rows = [];
+
+  function isWrong() { return mode === "wrong"; }
+  function source() { return isWrong() ? prog.wrong() : pick.list(); }
 
   function match(w) {
     if (catFilter && w.cid !== catFilter) return false;
+    if (!isWrong()) return true;
     if (filter === "repeat") return (w.wc || 1) >= 2;
     if (filter === "recent") return Date.now() - (w.ts || 0) < 30 * 86400000;
     return true;
   }
 
-  $("#bar").innerHTML =
-    '<div class="exbar">' +
-      '<div class="exrow">' +
-        '<button class="chipbtn on" data-f="all">全部</button>' +
-        '<button class="chipbtn" data-f="repeat">错≥2次</button>' +
-        '<button class="chipbtn" data-f="recent">最近30天</button>' +
-        '<select id="cf" class="catsel"><option value="">全部分类</option>' +
-          cats.map((c) => '<option value="' + c + '">' + esc(nameOf[c] || c) + '</option>').join("") +
-        '</select>' +
-      '</div>' +
-      '<div class="exrow exfoot">' +
-        '<span class="selinfo">已选 <b id="seln">0</b> / <i id="alln">' + wrong.length + '</i></span>' +
-        '<button class="btn" id="selall">全选</button>' +
-        '<button class="btn" id="selnone">清空</button>' +
-        '<button class="btn solid" id="exp" disabled>导出 Word</button>' +
-      '</div>' +
-    '</div>';
+  function refresh() { rows = source(); }
 
-  function draw() {
+  function drawTabs() {
+    const nw = prog.wrong().length, np = pick.count();
+    $("#tabs").innerHTML =
+      '<div class="tabs">' +
+        '<button class="tab' + (isWrong() ? " on" : "") + '" data-m="wrong">错题<i>' + nw + '</i></button>' +
+        '<button class="tab' + (!isWrong() ? " on" : "") + '" data-m="pick">收藏<i>' + np + '</i></button>' +
+      '</div>';
+    $("#sub").textContent = isWrong()
+      ? "只列答错的题；之后做对了会自动移出"
+      : "做题时点「☆ 收藏」收进来的题，和答对答错无关";
+  }
+
+  function drawBar() {
+    const cats = [];
+    rows.forEach((w) => { if (w.cid && cats.indexOf(w.cid) < 0) cats.push(w.cid); });
+    const chips = isWrong()
+      ? '<button class="chipbtn' + (filter === "all" ? " on" : "") + '" data-f="all">全部</button>' +
+        '<button class="chipbtn' + (filter === "repeat" ? " on" : "") + '" data-f="repeat">错≥2次</button>' +
+        '<button class="chipbtn' + (filter === "recent" ? " on" : "") + '" data-f="recent">最近30天</button>'
+      : "";
+    $("#bar").innerHTML =
+      '<div class="exbar">' +
+        '<div class="exrow">' + chips +
+          '<select id="cf" class="catsel"><option value="">全部分类</option>' +
+            cats.map((c) => '<option value="' + c + '"' + (c === catFilter ? " selected" : "") + '>' +
+              esc(nameOf[c] || c) + '</option>').join("") +
+          '</select>' +
+        '</div>' +
+        '<div class="exrow exfoot">' +
+          '<span class="selinfo">已选 <b id="seln">' + sel.size + '</b> / <i id="alln">0</i></span>' +
+          '<button class="btn" id="selall">全选</button>' +
+          '<button class="btn" id="selnone">清空</button>' +
+          '<button class="btn solid" id="exp"' + (sel.size ? "" : " disabled") + '>导出 Word</button>' +
+        '</div>' +
+      '</div>';
+  }
+
+  function drawList() {
     const groups = {};
-    wrong.filter(match).forEach((w) => { (groups[w.cid] = groups[w.cid] || []).push(w); });
-    const order = cats.filter((c) => groups[c]);
+    rows.filter(match).forEach((w) => { (groups[w.cid] = groups[w.cid] || []).push(w); });
+    const order = Object.keys(groups).sort((a, b) => groups[b].length - groups[a].length);
+
+    if (!order.length) {
+      $("#list").innerHTML = '<div class="empty">' + (isWrong()
+        ? '错题本是空的。<br><span>去做几道，答错的会自动收进来。</span>'
+        : '收藏是空的。<br><span>做题时点一下「☆ 收藏」，题就会进到这里。</span>') + '</div>' +
+        '<div style="text-align:center;margin-top:22px"><a class="btn solid" href="index.html">回目录</a></div>';
+      $("#alln").textContent = 0;
+      return;
+    }
 
     $("#list").innerHTML = order.map(function (cid) {
-      const rows = groups[cid].map(function (w) {
+      const list = groups[cid];
+      const body = list.map(function (w) {
+        const meta = [w.yr, w.rg].filter(Boolean).join(" ");
         return '<div class="wq">' +
           '<input type="checkbox" class="ck"' + (sel.has(w.qid) ? " checked" : "") + ' data-q="' + w.qid + '">' +
           '<a class="wt" href="practice.html?q=' + encodeURIComponent(w.qid) + '">' + esc(w.title || w.qid) + '</a>' +
-          (w.yr || w.rg ? '<span class="wm">' + esc([w.yr, w.rg].filter(Boolean).join(" ")) + '</span>' : "") +
-          (w.wc > 1 ? '<span class="wc">错 ' + w.wc + ' 次</span>' : "") +
+          (meta ? '<span class="wm">' + esc(meta) + '</span>' : "") +
+          (isWrong() && w.wc > 1 ? '<span class="wc">错 ' + w.wc + ' 次</span>' : "") +
+          (isWrong() ? "" : '<button class="rmv" data-r="' + w.qid + '">移出</button>') +
         '</div>';
       }).join("");
       return '<section class="module">' +
-        '<div class="module-head"><h2>' + esc(nameOf[cid] || "未分类") + '</h2><span>' + groups[cid].length + ' 道</span></div>' +
-        '<div class="wlist">' + rows + '</div></section>';
-    }).join("") || '<div class="empty">当前筛选下没有题</div>';
+        '<div class="module-head"><h2>' + esc(nameOf[cid] || "未分类") + '</h2><span>' + list.length + ' 道</span></div>' +
+        '<div class="wlist">' + body + '</div></section>';
+    }).join("");
 
-    $("#alln").textContent = wrong.filter(match).length;
-    upd();
+    $("#alln").textContent = rows.filter(match).length;
   }
 
   function upd() {
-    $("#seln").textContent = sel.size;
-    $("#exp").disabled = sel.size === 0;
+    const n = $("#seln");
+    if (n) n.textContent = sel.size;
+    const e = $("#exp");
+    if (e) e.disabled = sel.size === 0;
   }
+
+  function draw() {
+    drawTabs();
+    drawBar();
+    drawList();
+    upd();
+    $("#foot").textContent = "错题 " + prog.wrong().length + " 道 · 收藏 " + pick.count() +
+      " 道 · 勾选后导出，记录保存在本机浏览器里";
+  }
+
+  document.addEventListener("click", function (e) {
+    const tab = e.target.closest(".tab");
+    if (tab) { mode = tab.dataset.m; filter = "all"; catFilter = ""; refresh(); draw(); return; }
+    const rmv = e.target.closest(".rmv");
+    if (rmv) {
+      pick.remove(rmv.dataset.r);
+      sel.delete(rmv.dataset.r);
+      refresh(); draw();
+    }
+  });
 
   document.addEventListener("change", function (e) {
     const ck = e.target.closest(".ck");
-    if (!ck) return;
-    if (ck.checked) sel.add(ck.dataset.q); else sel.delete(ck.dataset.q);
-    upd();
+    if (ck) {
+      if (ck.checked) sel.add(ck.dataset.q); else sel.delete(ck.dataset.q);
+      upd();
+      return;
+    }
+    if (e.target.id === "cf") { catFilter = e.target.value; drawList(); upd(); }
   });
 
   $("#bar").addEventListener("click", function (e) {
@@ -115,16 +169,15 @@
     if (f) {
       filter = f.dataset.f;
       document.querySelectorAll(".chipbtn").forEach((b) => b.classList.toggle("on", b === f));
-      draw();
+      drawList();
       return;
     }
-    if (e.target.id === "selall") { wrong.filter(match).forEach((w) => sel.add(w.qid)); draw(); }
-    else if (e.target.id === "selnone") { sel.clear(); draw(); }
-    else if (e.target.id === "exp") runExport();
-  });
-
-  $("#bar").addEventListener("change", function (e) {
-    if (e.target.id === "cf") { catFilter = e.target.value; draw(); }
+    if (e.target.id === "selall") {
+      rows.filter(match).forEach((w) => sel.add(w.qid));
+      drawBar(); drawList(); upd();
+    } else if (e.target.id === "selnone") {
+      sel.clear(); drawBar(); drawList(); upd();
+    } else if (e.target.id === "exp") runExport();
   });
 
   async function runExport() {
@@ -136,16 +189,19 @@
     try {
       say("正在收集题目", "0 / " + qids.length);
       const items = await WYExport.collect(qids, (i, n) => say("正在收集题目", i + " / " + n));
-      const picked = new Map(wrong.map((w) => [w.qid, w.picked || ""]));
-      items.forEach((q) => { q.picked = picked.get(q.qid) || ""; });
+      const all = prog.all();
+      items.forEach(function (q) {
+        const r = all[q.qid];
+        q.picked = r ? (r[7] || "") : "";
+      });
 
       say("正在生成 Word", items.length + " 道题");
       const blob = await WYExport.docx(items, {}, (i, n) => say("正在生成 Word", i + " / " + n));
       const d = new Date();
-      const name = "错题本-" + d.getFullYear() + String(d.getMonth() + 1).padStart(2, "0") +
+      const name = "文渊-" + d.getFullYear() + String(d.getMonth() + 1).padStart(2, "0") +
         String(d.getDate()).padStart(2, "0") + "-" + items.length + "道.docx";
       WYExport.save(blob, name);
-      $("#foot").textContent = "已导出 " + items.length + " 道错题。";
+      $("#foot").textContent = "已导出 " + items.length + " 道。";
     } catch (e) {
       alert("导出失败：" + e.message);
     } finally {
@@ -153,8 +209,8 @@
     }
   }
 
+  refresh();
   draw();
-  $("#foot").textContent = "共 " + wrong.length + " 道 · 勾选后导出，记录保存在本机浏览器里";
 })();
 </script>
 </body>

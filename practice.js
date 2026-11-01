@@ -1,4 +1,4 @@
-﻿/* 文渊刷题 · 答题页 */
+/* 文渊刷题 · 答题页 */
 (function () {
   const P = new URLSearchParams(location.search);
   const cid = P.get("c");
@@ -251,6 +251,9 @@
     const submitLabel = revealed ? (atEnd ? "已完成" : "下一题 →") : (q.options.length === 0 ? "看答案" : "提交");
 
     /* 走完一组后的出口，避免卡在最后一题 */
+    const isPicked = pick.has(q.qid);
+    const starBtn = '<button class="btn star' + (isPicked ? " on" : "") + '" id="star">' +
+      (isPicked ? "★ 已收藏" : "☆ 收藏") + "</button>";
     let doneBox = "";
     if (atEnd) {
       const st = (prog.stats().byCat || {})[CAT.id] || { done: 0, right: 0 };
@@ -261,9 +264,10 @@
             (st.done ? " · 正确率 " + Math.round(st.right / st.done * 100) + "%" : "") +
             " · 本组 " + order.length + " 题</div>" +
           '<div class="dacts">' +
+            starBtn +
             '<a class="btn solid" href="practice.html?c=' + CAT.id + '&mode=rand">再来 20 题</a>' +
             '<a class="btn" href="index.html">回目录</a>' +
-            '<a class="btn" href="wrong.html">看错题本</a>' +
+            '<a class="btn" href="wrong.html">我的题</a>' +
             (pos > 0 ? '<button class="btn" id="prev">← 上一题</button>' : "") +
           "</div>" +
         "</div>";
@@ -282,6 +286,7 @@
           ? ""
           : '<div class="actions">' +
               '<button class="btn" id="prev"' + (pos === 0 ? " disabled" : "") + ">上一题</button>" +
+              starBtn +
               '<button class="btn solid grow" id="next"' + (!canSubmit ? " disabled" : "") + ">" +
                 esc(submitLabel) + "</button>" +
             "</div>" +
@@ -302,6 +307,14 @@
 
   /* ---------------- 交互 ---------------- */
   function bind(q, revealed) {
+    const star = stage.querySelector("#star");
+    if (star) {
+      star.addEventListener("click", function () {
+        const on = pick.toggle(q.qid, CAT.id, q.title, q.year, q.region);
+        star.textContent = on ? "★ 已收藏" : "☆ 收藏";
+        star.classList.toggle("on", on);
+      });
+    }
     const optsEl = stage.querySelector(".opts");
     if (optsEl) {
       optsEl.addEventListener("click", function (e) {
