@@ -102,7 +102,7 @@
       $("#list").innerHTML = '<div class="empty">' + (isWrong()
         ? '错题本是空的。<br><span>去做几道，答错的会自动收进来。</span>'
         : '收藏是空的。<br><span>做题时点一下「☆ 收藏」，题就会进到这里。</span>') + '</div>' +
-        '<div style="text-align:center;margin-top:22px"><a class="btn solid" href="index.html">回目录</a></div>';
+        '<div class="empty-act"><a class="btn solid" href="index.html">回目录</a></div>';
       $("#alln").textContent = 0;
       return;
     }

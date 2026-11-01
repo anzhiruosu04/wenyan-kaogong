@@ -840,3 +840,5 @@ img[flag="tex"] {
   .actions .btn.star { padding-left:8px; padding-right:8px; font-size:12px; }
   .actions .btn { padding-left:10px; padding-right:10px; }
 }
+.empty-act { display:flex; justify-content:center; margin-top:24px; }
+.empty-act .btn { flex:0 0 auto; padding:8px 26px; }
