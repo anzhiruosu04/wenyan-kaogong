@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-29 22:27:02",
+ "generated": "2026-11-01 09:55:54",
  "modules": [
   {
    "name": "政治理论",
@@ -16,20 +16,20 @@
       {
        "f": "c13-p0.json",
        "start": 0,
-       "count": 350,
-       "size": 0.65
+       "count": 200,
+       "size": 0.33
       },
       {
        "f": "c13-p1.json",
        "start": 200,
-       "count": 350,
-       "size": 0.8
+       "count": 200,
+       "size": 0.41
       },
       {
        "f": "c13-p2.json",
        "start": 400,
-       "count": 268,
-       "size": 0.68
+       "count": 200,
+       "size": 0.5
       },
       {
        "f": "c13-p3.json",
@@ -38,7 +38,7 @@
        "size": 0.18
       }
      ],
-     "size": 2.31,
+     "size": 1.42,
      "materials": 0
     },
     {
@@ -52,8 +52,8 @@
       {
        "f": "c14-p0.json",
        "start": 0,
-       "count": 291,
-       "size": 0.63
+       "count": 200,
+       "size": 0.41
       },
       {
        "f": "c14-p1.json",
@@ -62,7 +62,7 @@
        "size": 0.21
       }
      ],
-     "size": 0.84,
+     "size": 0.62,
      "materials": 0
     },
     {
@@ -118,80 +118,80 @@
       {
        "f": "c17-p0.json",
        "start": 0,
-       "count": 350,
-       "size": 0.56
+       "count": 200,
+       "size": 0.3
       },
       {
        "f": "c17-p1.json",
        "start": 200,
-       "count": 350,
-       "size": 0.59
+       "count": 200,
+       "size": 0.32
       },
       {
        "f": "c17-p2.json",
        "start": 400,
-       "count": 350,
-       "size": 0.61
+       "count": 200,
+       "size": 0.35
       },
       {
        "f": "c17-p3.json",
        "start": 600,
-       "count": 350,
-       "size": 0.58
+       "count": 200,
+       "size": 0.35
       },
       {
        "f": "c17-p4.json",
        "start": 800,
-       "count": 350,
-       "size": 0.6
+       "count": 200,
+       "size": 0.31
       },
       {
        "f": "c17-p5.json",
        "start": 1000,
-       "count": 350,
-       "size": 0.65
+       "count": 200,
+       "size": 0.37
       },
       {
        "f": "c17-p6.json",
        "start": 1200,
-       "count": 350,
-       "size": 0.66
+       "count": 200,
+       "size": 0.36
       },
       {
        "f": "c17-p7.json",
        "start": 1400,
-       "count": 350,
-       "size": 0.68
+       "count": 200,
+       "size": 0.38
       },
       {
        "f": "c17-p8.json",
        "start": 1600,
-       "count": 350,
-       "size": 0.71
+       "count": 200,
+       "size": 0.39
       },
       {
        "f": "c17-p9.json",
        "start": 1800,
-       "count": 350,
-       "size": 0.69
+       "count": 200,
+       "size": 0.4
       },
       {
        "f": "c17-p10.json",
        "start": 2000,
-       "count": 350,
-       "size": 0.67
+       "count": 200,
+       "size": 0.39
       },
       {
        "f": "c17-p11.json",
        "start": 2200,
-       "count": 350,
-       "size": 0.71
+       "count": 200,
+       "size": 0.38
       },
       {
        "f": "c17-p12.json",
        "start": 2400,
-       "count": 350,
-       "size": 0.74
+       "count": 200,
+       "size": 0.43
       },
       {
        "f": "c17-p13.json",
@@ -200,7 +200,7 @@
        "size": 0.41
       }
      ],
-     "size": 8.86,
+     "size": 5.14,
      "materials": 0
     },
     {
@@ -214,20 +214,20 @@
       {
        "f": "c18-p0.json",
        "start": 0,
-       "count": 350,
-       "size": 0.62
+       "count": 200,
+       "size": 0.34
       },
       {
        "f": "c18-p1.json",
        "start": 200,
-       "count": 350,
-       "size": 0.68
+       "count": 200,
+       "size": 0.37
       },
       {
        "f": "c18-p2.json",
        "start": 400,
-       "count": 350,
-       "size": 0.74
+       "count": 200,
+       "size": 0.41
       },
       {
        "f": "c18-p3.json",
@@ -236,7 +236,7 @@
        "size": 0.42
       }
      ],
-     "size": 2.46,
+     "size": 1.54,
      "materials": 0
     },
     {
@@ -250,20 +250,20 @@
       {
        "f": "c19-p0.json",
        "start": 0,
-       "count": 350,
-       "size": 0.72
+       "count": 200,
+       "size": 0.38
       },
       {
        "f": "c19-p1.json",
        "start": 200,
-       "count": 350,
-       "size": 0.77
+       "count": 200,
+       "size": 0.44
       },
       {
        "f": "c19-p2.json",
        "start": 400,
-       "count": 350,
-       "size": 0.79
+       "count": 200,
+       "size": 0.43
       },
       {
        "f": "c19-p3.json",
@@ -272,7 +272,7 @@
        "size": 0.39
       }
      ],
-     "size": 2.67,
+     "size": 1.64,
      "materials": 0
     },
     {
@@ -286,8 +286,8 @@
       {
        "f": "c20-p0.json",
        "start": 0,
-       "count": 280,
-       "size": 0.52
+       "count": 200,
+       "size": 0.34
       },
       {
        "f": "c20-p1.json",
@@ -296,7 +296,7 @@
        "size": 0.18
       }
      ],
-     "size": 0.7,
+     "size": 0.52,
      "materials": 0
     },
     {
@@ -310,8 +310,8 @@
       {
        "f": "c21-p0.json",
        "start": 0,
-       "count": 236,
-       "size": 0.45
+       "count": 200,
+       "size": 0.37
       },
       {
        "f": "c21-p1.json",
@@ -320,7 +320,7 @@
        "size": 0.08
       }
      ],
-     "size": 0.53,
+     "size": 0.45,
      "materials": 0
     }
    ]
@@ -340,98 +340,98 @@
       {
        "f": "c22-p0.json",
        "start": 0,
-       "count": 350,
-       "size": 0.66
+       "count": 200,
+       "size": 0.38
       },
       {
        "f": "c22-p1.json",
        "start": 200,
-       "count": 350,
-       "size": 0.68
+       "count": 200,
+       "size": 0.38
       },
       {
        "f": "c22-p2.json",
        "start": 400,
-       "count": 350,
-       "size": 0.69
+       "count": 200,
+       "size": 0.39
       },
       {
        "f": "c22-p3.json",
        "start": 600,
-       "count": 350,
-       "size": 0.7
+       "count": 200,
+       "size": 0.4
       },
       {
        "f": "c22-p4.json",
        "start": 800,
-       "count": 350,
-       "size": 0.7
+       "count": 200,
+       "size": 0.39
       },
       {
        "f": "c22-p5.json",
        "start": 1000,
-       "count": 350,
-       "size": 0.7
+       "count": 200,
+       "size": 0.4
       },
       {
        "f": "c22-p6.json",
        "start": 1200,
-       "count": 350,
-       "size": 0.71
+       "count": 200,
+       "size": 0.4
       },
       {
        "f": "c22-p7.json",
        "start": 1400,
-       "count": 350,
-       "size": 0.73
+       "count": 200,
+       "size": 0.42
       },
       {
        "f": "c22-p8.json",
        "start": 1600,
-       "count": 350,
-       "size": 0.74
+       "count": 200,
+       "size": 0.42
       },
       {
        "f": "c22-p9.json",
        "start": 1800,
-       "count": 350,
-       "size": 0.75
+       "count": 200,
+       "size": 0.43
       },
       {
        "f": "c22-p10.json",
        "start": 2000,
-       "count": 350,
-       "size": 0.75
+       "count": 200,
+       "size": 0.42
       },
       {
        "f": "c22-p11.json",
        "start": 2200,
-       "count": 350,
-       "size": 0.77
+       "count": 200,
+       "size": 0.43
       },
       {
        "f": "c22-p12.json",
        "start": 2400,
-       "count": 350,
-       "size": 0.75
+       "count": 200,
+       "size": 0.44
       },
       {
        "f": "c22-p13.json",
        "start": 2600,
-       "count": 350,
-       "size": 0.75
+       "count": 200,
+       "size": 0.42
       },
       {
        "f": "c22-p14.json",
        "start": 2800,
-       "count": 350,
-       "size": 0.78
+       "count": 200,
+       "size": 0.44
       },
       {
        "f": "c22-p15.json",
        "start": 3000,
-       "count": 326,
-       "size": 0.74
+       "count": 200,
+       "size": 0.45
       },
       {
        "f": "c22-p16.json",
@@ -440,7 +440,7 @@
        "size": 0.29
       }
      ],
-     "size": 11.89,
+     "size": 6.9,
      "materials": 0
     },
     {
@@ -454,80 +454,80 @@
       {
        "f": "c23-p0.json",
        "start": 0,
-       "count": 350,
-       "size": 0.6
+       "count": 200,
+       "size": 0.34
       },
       {
        "f": "c23-p1.json",
        "start": 200,
-       "count": 350,
-       "size": 0.61
+       "count": 200,
+       "size": 0.34
       },
       {
        "f": "c23-p2.json",
        "start": 400,
-       "count": 350,
-       "size": 0.64
+       "count": 200,
+       "size": 0.36
       },
       {
        "f": "c23-p3.json",
        "start": 600,
-       "count": 350,
-       "size": 0.61
+       "count": 200,
+       "size": 0.35
       },
       {
        "f": "c23-p4.json",
        "start": 800,
-       "count": 350,
-       "size": 0.64
+       "count": 200,
+       "size": 0.36
       },
       {
        "f": "c23-p5.json",
        "start": 1000,
-       "count": 350,
-       "size": 0.66
+       "count": 200,
+       "size": 0.38
       },
       {
        "f": "c23-p6.json",
        "start": 1200,
-       "count": 350,
-       "size": 0.67
+       "count": 200,
+       "size": 0.38
       },
       {
        "f": "c23-p7.json",
        "start": 1400,
-       "count": 350,
-       "size": 0.69
+       "count": 200,
+       "size": 0.39
       },
       {
        "f": "c23-p8.json",
        "start": 1600,
-       "count": 350,
-       "size": 0.7
+       "count": 200,
+       "size": 0.39
       },
       {
        "f": "c23-p9.json",
        "start": 1800,
-       "count": 350,
-       "size": 0.72
+       "count": 200,
+       "size": 0.42
       },
       {
        "f": "c23-p10.json",
        "start": 2000,
-       "count": 350,
-       "size": 0.72
+       "count": 200,
+       "size": 0.4
       },
       {
        "f": "c23-p11.json",
        "start": 2200,
-       "count": 350,
-       "size": 0.76
+       "count": 200,
+       "size": 0.43
       },
       {
        "f": "c23-p12.json",
        "start": 2400,
-       "count": 300,
-       "size": 0.66
+       "count": 200,
+       "size": 0.44
       },
       {
        "f": "c23-p13.json",
@@ -536,7 +536,7 @@
        "size": 0.22
       }
      ],
-     "size": 8.9,
+     "size": 5.2,
      "materials": 0
     },
     {
@@ -550,26 +550,26 @@
       {
        "f": "c24-p0.json",
        "start": 0,
-       "count": 350,
-       "size": 0.66
+       "count": 200,
+       "size": 0.37
       },
       {
        "f": "c24-p1.json",
        "start": 200,
-       "count": 350,
-       "size": 0.7
+       "count": 200,
+       "size": 0.39
       },
       {
        "f": "c24-p2.json",
        "start": 400,
-       "count": 350,
-       "size": 0.74
+       "count": 200,
+       "size": 0.42
       },
       {
        "f": "c24-p3.json",
        "start": 600,
-       "count": 337,
-       "size": 0.74
+       "count": 200,
+       "size": 0.43
       },
       {
        "f": "c24-p4.json",
@@ -578,7 +578,7 @@
        "size": 0.31
       }
      ],
-     "size": 3.15,
+     "size": 1.92,
      "materials": 0
     }
    ]
@@ -598,98 +598,98 @@
       {
        "f": "c25-p0.json",
        "start": 0,
-       "count": 350,
-       "size": 0.55
+       "count": 200,
+       "size": 0.31
       },
       {
        "f": "c25-p1.json",
        "start": 200,
-       "count": 350,
-       "size": 0.59
+       "count": 200,
+       "size": 0.32
       },
       {
        "f": "c25-p2.json",
        "start": 400,
-       "count": 350,
-       "size": 0.59
+       "count": 200,
+       "size": 0.35
       },
       {
        "f": "c25-p3.json",
        "start": 600,
-       "count": 350,
-       "size": 0.56
+       "count": 200,
+       "size": 0.33
       },
       {
        "f": "c25-p4.json",
        "start": 800,
-       "count": 350,
-       "size": 0.59
+       "count": 200,
+       "size": 0.32
       },
       {
        "f": "c25-p5.json",
        "start": 1000,
-       "count": 350,
-       "size": 0.62
+       "count": 200,
+       "size": 0.34
       },
       {
        "f": "c25-p6.json",
        "start": 1200,
-       "count": 350,
-       "size": 0.64
+       "count": 200,
+       "size": 0.35
       },
       {
        "f": "c25-p7.json",
        "start": 1400,
-       "count": 350,
-       "size": 0.67
+       "count": 200,
+       "size": 0.38
       },
       {
        "f": "c25-p8.json",
        "start": 1600,
-       "count": 350,
-       "size": 0.66
+       "count": 200,
+       "size": 0.39
       },
       {
        "f": "c25-p9.json",
        "start": 1800,
-       "count": 350,
-       "size": 0.58
+       "count": 200,
+       "size": 0.35
       },
       {
        "f": "c25-p10.json",
        "start": 2000,
-       "count": 350,
-       "size": 0.54
+       "count": 200,
+       "size": 0.31
       },
       {
        "f": "c25-p11.json",
        "start": 2200,
-       "count": 350,
-       "size": 0.52
+       "count": 200,
+       "size": 0.3
       },
       {
        "f": "c25-p12.json",
        "start": 2400,
-       "count": 350,
-       "size": 0.56
+       "count": 200,
+       "size": 0.31
       },
       {
        "f": "c25-p13.json",
        "start": 2600,
-       "count": 350,
-       "size": 0.58
+       "count": 200,
+       "size": 0.33
       },
       {
        "f": "c25-p14.json",
        "start": 2800,
-       "count": 350,
-       "size": 0.57
+       "count": 200,
+       "size": 0.33
       },
       {
        "f": "c25-p15.json",
        "start": 3000,
-       "count": 224,
-       "size": 0.35
+       "count": 200,
+       "size": 0.31
       },
       {
        "f": "c25-p16.json",
@@ -698,7 +698,7 @@
        "size": 0.04
       }
      ],
-     "size": 9.21,
+     "size": 5.37,
      "materials": 0
     }
    ]

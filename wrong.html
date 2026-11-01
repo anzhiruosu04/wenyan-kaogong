@@ -86,9 +86,10 @@
         '</div>' +
         '<div class="exrow exfoot">' +
           '<span class="selinfo">已选 <b id="seln">' + sel.size + '</b> / <i id="alln">0</i></span>' +
+          '<button class="btn solid" id="drill" disabled>' + (isWrong() ? "重刷" : "练") + ' 0 道</button>' +
           '<button class="btn" id="selall">全选</button>' +
           '<button class="btn" id="selnone">清空</button>' +
-          '<button class="btn solid" id="exp"' + (sel.size ? "" : " disabled") + '>导出 Word</button>' +
+          '<button class="btn" id="exp"' + (sel.size ? "" : " disabled") + '>导出 Word</button>' +
         '</div>' +
       '</div>';
   }
@@ -104,6 +105,8 @@
         : '收藏是空的。<br><span>做题时点一下「☆ 收藏」，题就会进到这里。</span>') + '</div>' +
         '<div class="empty-act"><a class="btn solid" href="index.html">回目录</a></div>';
       $("#alln").textContent = 0;
+      const d0 = $("#drill");
+      if (d0) { d0.textContent = (isWrong() ? "重刷 " : "练 ") + "0 道"; d0.disabled = true; }
       return;
     }
 
@@ -124,7 +127,13 @@
         '<div class="wlist">' + body + '</div></section>';
     }).join("");
 
-    $("#alln").textContent = rows.filter(match).length;
+    const shown = rows.filter(match).length;
+    $("#alln").textContent = shown;
+    const drill = $("#drill");
+    if (drill) {
+      drill.textContent = (isWrong() ? "重刷 " : "练 ") + shown + " 道";
+      drill.disabled = shown === 0;
+    }
   }
 
   function upd() {
@@ -177,6 +186,15 @@
       drawBar(); drawList(); upd();
     } else if (e.target.id === "selnone") {
       sel.clear(); drawBar(); drawList(); upd();
+    } else if (e.target.id === "drill") {
+      const qs = rows.filter(match).map((w) => w.qid);
+      if (!qs.length) return;
+      for (let i = qs.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const t = qs[i]; qs[i] = qs[j]; qs[j] = t;
+      }
+      store.set("queue", qs);
+      location.href = "practice.html?mode=queue";
     } else if (e.target.id === "exp") runExport();
   });
 

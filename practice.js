@@ -59,7 +59,10 @@
     META = await getMeta(CAT);
     document.title = (CAT ? CAT.name : "错题重刷") + " · 文渊";
     await render();
-  })();
+  })().catch(function (e) {
+    fail("加载失败：" + ((e && e.message) || e));
+    if (window.console) console.error(e);
+  });
 
   function fail(msg) {
     stage.innerHTML = '<div class="loading">' + esc(msg) + '</div>';
@@ -255,7 +258,20 @@
     const starBtn = '<button class="btn star' + (isPicked ? " on" : "") + '" id="star">' +
       (isPicked ? "★ 已收藏" : "☆ 收藏") + "</button>";
     let doneBox = "";
-    if (atEnd) {
+    if (atEnd && mode === "queue") {
+      doneBox =
+        '<div class="donebox">' +
+          '<div class="dh">这轮重刷走完了</div>' +
+          '<div class="dp">共 ' + order.length + ' 道 · 答错的会留在错题本里，做对的自动移出</div>' +
+          '<div class="dacts">' +
+            starBtn +
+            '<button class="btn solid" id="again">再刷一遍</button>' +
+            '<a class="btn" href="wrong.html">我的收藏</a>' +
+            '<a class="btn" href="index.html">回目录</a>' +
+            (pos > 0 ? '<button class="btn" id="prev">← 上一题</button>' : "") +
+          "</div>" +
+        "</div>";
+    } else if (atEnd) {
       const st = (prog.stats().byCat || {})[CAT.id] || { done: 0, right: 0 };
       doneBox =
         '<div class="donebox">' +
@@ -328,6 +344,18 @@
     }
 
     const prevBtn = $("#prev"), nextBtn = $("#next");
+    const again = stage.querySelector("#again");
+    if (again) {
+      again.addEventListener("click", function () {
+        const qs = order.slice();
+        for (let i = qs.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const t = qs[i]; qs[i] = qs[j]; qs[j] = t;
+        }
+        store.set("queue", qs);
+        location.reload();
+      });
+    }
     if (prevBtn) prevBtn.onclick = function () { if (pos > 0) { pos--; render(); window.scrollTo(0, 0); } };
     if (nextBtn) nextBtn.onclick = function () { next(q, revealed); };
   }
