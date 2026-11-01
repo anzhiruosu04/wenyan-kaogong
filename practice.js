@@ -267,7 +267,7 @@
             starBtn +
             '<a class="btn solid" href="practice.html?c=' + CAT.id + '&mode=rand">再来 20 题</a>' +
             '<a class="btn" href="index.html">回目录</a>' +
-            '<a class="btn" href="wrong.html">我的题</a>' +
+            '<a class="btn" href="wrong.html">我的收藏</a>' +
             (pos > 0 ? '<button class="btn" id="prev">← 上一题</button>' : "") +
           "</div>" +
         "</div>";
