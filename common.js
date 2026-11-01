@@ -34,11 +34,12 @@ const prog = {
     return this._d;
   },
   get(qid) { return this.all()[qid] || null; },
-  mark(qid, ok, cid, title, yr, rg, picked) {
+  mark(qid, ok, cid, title, yr, rg, picked, ms) {
     const d = this.all();
     const old = d[qid];
     const wc = (old ? old[4] || 0 : 0) + (ok ? 0 : 1);
-    d[qid] = [ok ? 1 : 0, cid, (title || (old ? old[2] : "")) || "", Date.now(), wc, yr || "", rg || "", picked || ""];
+    d[qid] = [ok ? 1 : 0, cid, (title || (old ? old[2] : "")) || "", Date.now(), wc,
+      yr || "", rg || "", picked || "", ms || 0];
     this._dirty = true;
     this.flush();
     return d[qid];

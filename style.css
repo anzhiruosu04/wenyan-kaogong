@@ -842,3 +842,13 @@ img[flag="tex"] {
 }
 .empty-act { display:flex; justify-content:center; margin-top:24px; }
 .empty-act .btn { flex:0 0 auto; padding:8px 26px; }
+
+/* ---------- 答题页：用时与速度 ---------- */
+.timing { margin:9px 0 18px; font-size:13px; color:var(--faint); display:flex; align-items:center; gap:8px; }
+.timing b { color:var(--muted); font-weight:600; }
+.tb { font-size:11px; line-height:1; padding:3px 6px; border-radius:2px; border:1px solid var(--line); color:var(--faint); }
+.tb.ok { color:#3f7d5a; border-color:#b8d8c6; background:#eef6f1; }
+.tb.bad { color:var(--accent); border-color:#e5c4bb; background:var(--accent-soft); }
+@media (max-width:420px) {
+  .timing { font-size:12px; margin-bottom:14px; }
+}

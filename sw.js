@@ -1,6 +1,6 @@
 /* 文渊刷题 · Service Worker
    目标：题库数据与已看过的图离线可用；页面走「网络优先，断网回缓存」。 */
-const VERSION = "wy-v6";
+const VERSION = "wy-v7";
 const SHELL = VERSION + "-shell";
 const DATA = VERSION + "-data";
 const IMG = VERSION + "-img";

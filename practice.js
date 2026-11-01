@@ -11,11 +11,29 @@
   const METAcache = new Map(), KPmap = new Map(), KPloading = new Map();
   const done = new Map();          // qid -> 选中项（本轮已作答）
 
+  /* 计时：每题从出现在屏幕上开始算，提交时结算 */
+  let startAt = 0;
+  const sessionMs = [];            // 本轮各题用时（毫秒）
+  const CATMOD = {};               // 分类 id -> 模块名
+
+  /* 参考用时（秒）：快了给正反馈，慢了提示别恋战。数值是经验值，不是考试标准 */
+  const SPEED = {
+    "判断推理": { fast: 35, slow: 70 },
+    "资料分析": { fast: 70, slow: 140 },
+    "言语理解与表达": { fast: 40, slow: 80 },
+    "数量关系": { fast: 70, slow: 130 },
+    "常识判断": { fast: 20, slow: 45 },
+    "政治理论": { fast: 20, slow: 45 }
+  };
+
   const stage = $("#stage");
 
   /* ---------------- 启动 ---------------- */
   (async function init() {
     INDEX = await loadJSON(DATA + "index.json");
+    (INDEX.modules || []).forEach(function (m) {
+      (m.cats || []).forEach(function (c) { CATMOD[c.id] = m.name; });
+    });
 
     if (mode === "queue") {
       /* 错题重刷：队列由错题本页写入 localStorage */
@@ -66,6 +84,33 @@
 
   function fail(msg) {
     stage.innerHTML = '<div class="loading">' + esc(msg) + '</div>';
+  }
+
+  /* ---------------- 计时相关 ---------------- */
+  function fmtDur(ms) {
+    const s = ms / 1000;
+    if (s < 60) return (Math.round(s * 10) / 10).toFixed(1) + " 秒";
+    const m = Math.floor(s / 60);
+    const r = Math.round(s - m * 60);
+    return m + " 分 " + r + " 秒";
+  }
+
+  function speedTag(ms) {
+    const t = SPEED[CATMOD[CAT.id]];
+    if (!t) return "";
+    const s = ms / 1000;
+    if (s <= t.fast) return '<span class="tb ok">快</span>';
+    if (s <= t.slow) return '<span class="tb">正常</span>';
+    return '<span class="tb bad">偏慢</span>';
+  }
+
+  function sessLine() {
+    if (!sessionMs.length) return "";
+    let sum = 0;
+    for (let i = 0; i < sessionMs.length; i++) sum += sessionMs[i];
+    let s = " · 用时 " + fmtDur(sum);
+    if (sessionMs.length > 1) s += " · 平均 " + fmtDur(sum / sessionMs.length) + "/题";
+    return s;
   }
 
   /* 分类元数据缓存 */
@@ -208,6 +253,14 @@
           "</b>" + (picked ? " · 你选了 " + esc(picked) : "") + "</div>";
     }
 
+    /* 用时与速度反馈 */
+    let timing = "";
+    if (revealed) {
+      const rec = prog.get(q.qid);
+      const ms = rec && rec[8] ? rec[8] : 0;
+      if (ms > 0) timing = '<div class="timing">本题用时 <b>' + fmtDur(ms) + "</b>" + speedTag(ms) + "</div>";
+    }
+
     /* 解析区 */
     let detail = "";
     if (revealed) {
@@ -262,7 +315,7 @@
       doneBox =
         '<div class="donebox">' +
           '<div class="dh">这轮重刷走完了</div>' +
-          '<div class="dp">共 ' + order.length + ' 道 · 答错的会留在错题本里，做对的自动移出</div>' +
+          '<div class="dp">共 ' + order.length + ' 道' + sessLine() + ' · 答错的会留在错题本里，做对的自动移出</div>' +
           '<div class="dacts">' +
             starBtn +
             '<button class="btn solid" id="again">再刷一遍</button>' +
@@ -278,7 +331,7 @@
           '<div class="dh">这一组走完了</div>' +
           '<div class="dp">' + esc(CAT.name) + " 已做 " + st.done + " 题" +
             (st.done ? " · 正确率 " + Math.round(st.right / st.done * 100) + "%" : "") +
-            " · 本组 " + order.length + " 题</div>" +
+            " · 本组 " + order.length + " 题" + sessLine() + "</div>" +
           '<div class="dacts">' +
             starBtn +
             '<a class="btn solid" href="practice.html?c=' + CAT.id + '&mode=rand">再来 20 题</a>' +
@@ -289,6 +342,7 @@
         "</div>";
     }
 
+    startAt = performance.now();
     stage.innerHTML =
       '<div class="q">' +
         (tags.length ? '<div class="tags">' + tags.join("") + "</div>" : "") +
@@ -297,6 +351,7 @@
         (q.ask ? '<div class="ask">' + esc(q.ask) + "</div>" : "") +
         (q.options.length ? '<ul class="opts' + (plainOpts ? " slim" : "") + '">' + opts + "</ul>" : "") +
         verdict +
+        timing +
         detail +
         (atEnd
           ? ""
@@ -365,7 +420,12 @@
       const sel = stage.querySelector(".opt.sel");
       const pick = sel ? sel.dataset.k : null;
       done.set(q.qid, pick);
-      prog.mark(q.qid, pick === q.answer, CAT.id, q.title, q.year, q.region, pick);
+      let ms = 0;
+      if (startAt) {
+        const d = Math.round(performance.now() - startAt);
+        if (d > 200 && d < 30 * 60 * 1000) { ms = d; sessionMs.push(d); }
+      }
+      prog.mark(q.qid, pick === q.answer, CAT.id, q.title, q.year, q.region, pick, ms);
       await render();
       const v = stage.querySelector(".verdict") || stage.querySelector(".block");
       if (v) v.scrollIntoView({ block: "center", behavior: "smooth" });
