@@ -10,8 +10,21 @@
   const METAMAP = new Map();     // cid -> Promise<meta>
   const QMAP = new Map();        // "cid:gi" -> Promise<q>
 
-  let st = null;                 // 当前模考：{pid,name,items,answers,pos,endAt,dur,qids,submitted}
+  let st = null;                 // 当前模考：{pid,name,items,answers,pos,endAt,dur,qids,submitted,times}
   let tickId = null;
+
+  /* 每题计时：进入某题开始计，离开或交卷时结算进 st.times[pos] */
+  let qStart = 0, qPos = -1;
+  function touchTime() {
+    if (qPos >= 0 && qStart) {
+      const d = performance.now() - qStart;
+      if (d > 0 && d < 3 * 3600 * 1000) {
+        st.times[qPos] = (st.times[qPos] || 0) + Math.round(d);
+      }
+    }
+    qStart = 0;
+    qPos = -1;
+  }
 
   /* ---------------- 启动 ---------------- */
   (async function init() {
@@ -25,6 +38,7 @@
       const p = PAPERS.find((x) => x.id === pid);
       if (!p) return fail("找不到这份试卷");
       if (saved && !saved.submitted && saved.pid === pid) { resume(saved); return; }
+      if (saved && saved.submitted && saved.pid === pid && saved.result) { st = saved; showResult(saved); return; }
       return startPanel(p);
     }
     renderList("");
@@ -149,7 +163,7 @@
     st = {
       pid: p.id, name: p.name, items: p.items, answers: {}, pos: 0,
       dur: min, endAt: min ? Date.now() + min * 60000 : 0,
-      startedAt: Date.now(), qids: {}, submitted: false
+      startedAt: Date.now(), qids: {}, times: {}, submitted: false
     };
     save();
     run();
@@ -159,6 +173,7 @@
     st = s;
     st.qids = st.qids || {};
     st.answers = st.answers || {};
+    st.times = st.times || {};
     run();
   }
 
@@ -257,6 +272,7 @@
     stage.querySelector(".sheet").addEventListener("click", function (e) {
       const b = e.target.closest(".sq");
       if (!b) return;
+      touchTime();
       st.pos = parseInt(b.dataset.i, 10);
       save();
       renderQ();
@@ -264,17 +280,25 @@
     });
 
     const prev = document.getElementById("prev"), next = document.getElementById("next");
-    if (prev) prev.onclick = function () { if (st.pos > 0) { st.pos--; save(); renderQ(); window.scrollTo(0, 0); } };
+    if (prev) prev.onclick = function () {
+      if (st.pos > 0) { touchTime(); st.pos--; save(); renderQ(); window.scrollTo(0, 0); }
+    };
     if (next) next.onclick = function () {
-      if (st.pos + 1 < st.items.length) { st.pos++; save(); renderQ(); window.scrollTo(0, 0); }
-      else submitExam(false);
+      if (st.pos + 1 < st.items.length) {
+        touchTime(); st.pos++; save(); renderQ(); window.scrollTo(0, 0);
+      } else submitExam(false);
     };
     document.getElementById("hand").onclick = function () { submitExam(false); };
+
+    /* 计时起点放在渲染完成之后，图片解码时间不算在思考里 */
+    qPos = st.pos;
+    qStart = performance.now();
   }
 
   /* ---------------- 交卷 ---------------- */
   async function submitExam(auto) {
     if (tickId) { clearInterval(tickId); tickId = null; }
+    touchTime();
     const answered = Object.keys(st.answers).length;
     if (!auto) {
       const left = st.items.length - answered;
@@ -299,13 +323,17 @@
       byCat[name].n++;
       if (ok) byCat[name].r++;
 
-      rows.push([i + 1, ok, sel, q.answer, q.qid, name]);
-      if (sel) prog.mark(q.qid, ok, item[0], q.title, q.year, q.region, sel, 0);
+      rows.push([i + 1, ok, sel, q.answer, q.qid, name, st.times[i] || 0]);
+      if (sel) prog.mark(q.qid, ok, item[0], q.title, q.year, q.region, sel, st.times[i] || 0);
     }
 
     const used = st.dur ? Math.min(st.dur * 60000, Date.now() - st.startedAt) : Date.now() - st.startedAt;
+    const answeredTimes = Object.keys(st.times || {}).filter(function (k) { return st.times[k] > 0; });
+    const avg = answeredTimes.length
+      ? answeredTimes.reduce(function (a, k) { return a + st.times[k]; }, 0) / answeredTimes.length : 0;
     st.submitted = true;
-    st.result = { right: right, wrong: wrong, blank: blank, used: used, total: st.items.length };
+    st.result = { right: right, wrong: wrong, blank: blank, used: used, total: st.items.length,
+      avg: avg, byCat: byCat, rows: rows };
     save();
 
     renderResult(right, wrong, blank, used, byCat, rows, auto);
@@ -327,9 +355,11 @@
     const qrows = rows.map(function (r) {
       const cls = !r[2] ? "blank" : (r[1] ? "ok" : "bad");
       const mark = !r[2] ? "未答" : (r[1] ? "✓" : "✗ " + esc(r[2]) + " → " + esc(r[3]));
+      const sec = Math.round((r[6] || 0) / 1000);
       return '<a class="rrow ' + cls + '" href="practice.html?q=' + encodeURIComponent(r[4]) + '">' +
         '<span class="rn">' + r[0] + "</span>" +
         '<span class="rt">' + esc(r[5]) + "</span>" +
+        (sec ? '<span class="rsec">' + sec + "s</span>" : "") +
         '<span class="rm">' + mark + "</span></a>";
     }).join("");
 
@@ -338,7 +368,8 @@
       '<div class="score">' +
         '<div class="sbig">' + rate + '<i>%</i></div>' +
         '<div class="sline">答对 ' + right + " · 答错 " + wrong + " · 未答 " + blank + " · 共 " + total + " 题</div>" +
-        '<div class="sline">用时 ' + fmtDur(used) + (st.dur ? "（限时 " + st.dur + " 分钟）" : "") + "</div>" +
+        '<div class="sline">用时 ' + fmtDur(used) + (st.dur ? "（限时 " + st.dur + " 分钟）" : "") +
+          (st.result && st.result.avg ? " · 平均每题 " + fmtDur(st.result.avg) : "") + "</div>" +
       "</div>" +
       '<div class="cstats">' + catRows + "</div>" +
       '<div class="rlist">' + qrows + "</div>" +
@@ -349,8 +380,18 @@
         '<a class="btn" href="index.html">回目录</a>' +
       "</div>";
 
-    st.result.rows = null;
+    st.result.rows = rows;
+    st.result.byCat = byCat;
     save();
+  }
+
+  /* 交卷后刷新页面：直接从存档重绘成绩单，不再重新拉题 */
+  function showResult(saved) {
+    st = saved;
+    st.submitted = true;
+    const r = st.result || {};
+    renderResult(r.right || 0, r.wrong || 0, r.blank || 0, r.used || 0,
+      r.byCat || {}, r.rows || [], false);
   }
 
   /* ---------------- 键盘 ---------------- */

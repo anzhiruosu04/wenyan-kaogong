@@ -298,6 +298,29 @@
           "</div></div>");
       }
 
+      /* 同类真题：vault 里人工标注的跨卷关联，按相关度排序 */
+      if (q.related && q.related.length) {
+        const rels = q.related.slice().sort(function (a, b) {
+          const ra = parseInt(String(a.desc || "").split("相关度")[1] || "0", 10);
+          const rb = parseInt(String(b.desc || "").split("相关度")[1] || "0", 10);
+          return (rb || 0) - (ra || 0);
+        });
+        const shown = rels.slice(0, 6);
+        blocks.push('<div class="block"><div class="h">同类真题</div><div class="rel">' +
+          shown.map(function (r) {
+            const bits = String(r.desc || "").split("，相关度");
+            const label = bits[0] || r.desc || r.qid;
+            const n = bits[1] || "";
+            return '<a class="relrow" href="practice.html?q=' + encodeURIComponent(r.qid) + '">' +
+              '<span class="rl">' + esc(label) + "</span>" +
+              (n ? '<span class="rv">相关度 ' + esc(n) + "</span>" : "") +
+              "</a>";
+          }).join("") +
+          (rels.length > shown.length
+            ? '<div class="rmore">还有 ' + (rels.length - shown.length) + " 道同类题</div>" : "") +
+          "</div></div>");
+      }
+
       detail = blocks.join("");
     }
 
@@ -310,6 +333,8 @@
     const isPicked = pick.has(q.qid);
     const starBtn = '<button class="btn star' + (isPicked ? " on" : "") + '" id="star">' +
       (isPicked ? "★ 已收藏" : "☆ 收藏") + "</button>";
+    /* 从「同类真题」点进来的单题页，给一条回头路 */
+    const backBtn = (qid && !cid) ? '<button class="btn" id="goback">← 返回</button>' : "";
     let doneBox = "";
     if (atEnd && mode === "queue") {
       doneBox =
@@ -356,7 +381,10 @@
         (atEnd
           ? ""
           : '<div class="actions">' +
-              '<button class="btn" id="prev"' + (pos === 0 ? " disabled" : "") + ">上一题</button>" +
+              backBtn +
+              (order.length > 1
+                ? '<button class="btn" id="prev"' + (pos === 0 ? " disabled" : "") + ">上一题</button>"
+                : "") +
               starBtn +
               '<button class="btn solid grow" id="next"' + (!canSubmit ? " disabled" : "") + ">" +
                 esc(submitLabel) + "</button>" +
@@ -413,6 +441,11 @@
     }
     if (prevBtn) prevBtn.onclick = function () { if (pos > 0) { pos--; render(); window.scrollTo(0, 0); } };
     if (nextBtn) nextBtn.onclick = function () { next(q, revealed); };
+    const goBack = stage.querySelector("#goback");
+    if (goBack) goBack.onclick = function () {
+      if (history.length > 1) history.back();
+      else location.href = "index.html";
+    };
   }
 
   async function next(q, revealed) {
