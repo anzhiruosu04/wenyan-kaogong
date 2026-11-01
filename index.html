@@ -61,11 +61,13 @@
         '<div class="ov-item"><b>' + st.done.toLocaleString() + '</b><span>已做</span></div>' +
         '<div class="ov-item"><b>' + rate + '%</b><span>正确率</span></div>' +
         '<div class="ov-item"><b>' + wrongN + '</b><span>错题</span></div>' +
+        '<a class="ov-link" href="exam.html">整卷模考 →</a>' +
         '<a class="ov-link" href="wrong.html">我的收藏 →</a>' +
       '</div>';
   } else {
     $("#overview").innerHTML =
       '<div class="overview"><div class="ov-item"><b>0</b><span>已做</span></div>' +
+      '<a class="ov-link" href="exam.html">整卷模考 →</a>' +
       '<a class="ov-link" href="wrong.html">我的收藏 →</a></div>';
   }
 

@@ -852,3 +852,77 @@ img[flag="tex"] {
 @media (max-width:420px) {
   .timing { font-size:12px; margin-bottom:14px; }
 }
+
+/* ---------- 模考：选卷 ---------- */
+.resbar { display:flex; align-items:center; justify-content:space-between; gap:14px;
+  background:var(--accent-soft); border:1px solid #e5c4bb; border-radius:3px; padding:12px 16px; margin:0 0 18px; }
+.resbar b { display:block; font-size:13.5px; color:var(--accent); margin-bottom:3px; }
+.resbar span { font-size:12.5px; color:var(--muted); }
+.resbar .btn { flex:0 0 auto; padding:7px 18px; }
+.pcount { font-size:12px; color:var(--faint); margin:4px 0 14px; }
+.plist { border-top:1px solid var(--line); }
+.prow { display:flex; align-items:baseline; justify-content:space-between; gap:16px;
+  padding:13px 4px; border-bottom:1px solid var(--line); text-decoration:none; }
+.prow:hover { background:var(--card); }
+.prow .pn { font-size:14.5px; color:var(--ink); }
+.prow .pm { font-size:12px; color:var(--faint); white-space:nowrap; }
+
+.panel { border:1px solid var(--line); background:var(--card); border-radius:3px; padding:26px 28px; }
+.panel .pname { font-family:var(--serif); font-size:19px; color:var(--ink); line-height:1.5; margin-bottom:10px; }
+.panel .pinfo { font-size:13px; color:var(--muted); margin-bottom:5px; }
+.panel .pparts { font-size:12.5px; color:var(--faint); line-height:1.8; margin:12px 0 20px;
+  border-top:1px dashed var(--line); padding-top:14px; }
+.panel .pacts { display:flex; flex-wrap:wrap; gap:10px; }
+.panel .pacts .btn { flex:0 0 auto; padding:9px 20px; }
+.backlink { display:inline-block; margin-top:18px; font-size:13px; color:var(--muted); text-decoration:none; }
+.backlink:hover { color:var(--accent); }
+
+/* ---------- 模考：作答 ---------- */
+.exbar { display:flex; align-items:center; justify-content:space-between;
+  border-bottom:1px solid var(--line); padding:2px 0 12px; margin-bottom:18px; }
+#clock { font-family:var(--serif); font-size:17px; color:var(--ink); letter-spacing:.04em; }
+#clock.urgent { color:var(--accent); }
+.exprog { font-size:12.5px; color:var(--faint); letter-spacing:.06em; }
+
+.sheetwrap { margin-top:26px; border-top:1px solid var(--line); padding-top:14px; }
+.sheettip { font-size:12px; color:var(--faint); margin-bottom:9px; }
+.sheet { display:flex; flex-wrap:wrap; gap:5px; }
+.sq { font:inherit; font-size:11.5px; width:27px; height:24px; padding:0; cursor:pointer;
+  background:var(--card); color:var(--faint); border:1px solid var(--line); border-radius:2px; }
+.sq.on { background:var(--accent); border-color:var(--accent); color:#fff; }
+.sq.cur { box-shadow:0 0 0 2px var(--accent-soft); border-color:var(--accent); }
+
+/* ---------- 模考：成绩单 ---------- */
+.autoTip { background:var(--accent-soft); border:1px solid #e5c4bb; color:var(--accent);
+  font-size:13px; padding:10px 14px; border-radius:3px; margin-bottom:16px; }
+.score { border:1px solid var(--line); background:var(--card); border-radius:3px;
+  padding:24px 26px; text-align:center; margin-bottom:18px; }
+.sbig { font-family:var(--serif); font-size:52px; line-height:1; color:var(--accent); }
+.sbig i { font-size:20px; font-style:normal; margin-left:2px; }
+.sline { font-size:13px; color:var(--muted); margin-top:10px; }
+.cstats { border:1px solid var(--line); border-radius:3px; overflow:hidden; margin-bottom:18px; }
+.crow { display:flex; justify-content:space-between; padding:10px 16px; font-size:13px;
+  border-bottom:1px solid var(--line); background:var(--card); }
+.crow:last-child { border-bottom:none; }
+.crow .cn { color:var(--muted); }
+.crow .cv { color:var(--ink); }
+.rlist { border-top:1px solid var(--line); }
+.rrow { display:flex; align-items:baseline; gap:12px; padding:10px 4px;
+  border-bottom:1px solid var(--line); text-decoration:none; }
+.rrow .rn { font-size:11.5px; color:var(--faint); width:26px; flex-shrink:0; text-align:right; }
+.rrow .rt { font-size:13px; color:var(--muted); flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.rrow .rm { font-size:12.5px; white-space:nowrap; }
+.rrow.ok .rm { color:#3f7d5a; }
+.rrow.bad .rm { color:var(--accent); }
+.rrow.blank .rm { color:var(--faint); }
+.rrow:hover { background:var(--card); }
+.rlist + .pacts { display:flex; flex-wrap:wrap; gap:10px; margin-top:22px; }
+.rlist + .pacts .btn { flex:0 0 auto; padding:9px 20px; }
+
+@media (max-width:520px) {
+  .prow { flex-direction:column; gap:4px; }
+  .prow .pm { white-space:normal; }
+  .sheet .sq { width:25px; height:23px; }
+  .sbig { font-size:42px; }
+  .panel { padding:20px 18px; }
+}
